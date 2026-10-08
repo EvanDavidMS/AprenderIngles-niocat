@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { PageSkeleton } from "@/components/PageSkeleton";
 import { DICTIONARY, topicBySlug } from "@/data/dictionary";
 import { TopicView } from "./TopicView";
 
@@ -17,7 +19,16 @@ export async function generateMetadata({ params }: PageProps<"/diccionario/[tema
   };
 }
 
-export default async function TopicPage({ params }: PageProps<"/diccionario/[tema]">) {
+export default function TopicPage({ params }: PageProps<"/diccionario/[tema]">) {
+  // leer la URL dentro de <Suspense> deja que la navegación muestre algo al instante
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <Topic params={params} />
+    </Suspense>
+  );
+}
+
+async function Topic({ params }: { params: PageProps<"/diccionario/[tema]">["params"] }) {
   const { tema } = await params;
   if (!topicBySlug(tema)) notFound();
   // el tema tiene funciones (no serializables), así que el cliente lo busca por slug

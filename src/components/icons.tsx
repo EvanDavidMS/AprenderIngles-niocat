@@ -168,3 +168,10 @@ export const ArrowUpRight = (p: SVGProps<SVGSVGElement>) => (
     <path d="M7 17 17 7M8 7h9v9" />
   </svg>
 );
+
+export const BriefcaseIcon = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)}>
+    <rect x="3" y="7" width="18" height="13" rx="2" />
+    <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18" />
+  </svg>
+);

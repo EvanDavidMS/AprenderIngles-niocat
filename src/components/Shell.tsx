@@ -9,6 +9,7 @@ import { updateSettings, useHydrated, useProgress } from "@/lib/store";
 import { setTheme, useTheme } from "@/lib/theme";
 import {
   BookIcon,
+  BriefcaseIcon,
   CardsIcon,
   ChatIcon,
   EarIcon,
@@ -24,6 +25,7 @@ import {
 const LINKS = [
   { href: "/", label: "Inicio", Icon: HomeIcon },
   { href: "/diccionario", label: "Diccionario", Icon: BookIcon },
+  { href: "/especialidades", label: "Especialidades", short: "Oficios", Icon: BriefcaseIcon },
   { href: "/vocabulario", label: "Tarjetas", Icon: CardsIcon },
   { href: "/escuchar", label: "Escuchar", Icon: EarIcon },
   { href: "/hablar", label: "Hablar", Icon: MicIcon },
@@ -32,7 +34,7 @@ const LINKS = [
 ];
 
 /** En el celular, la barra inferior muestra sólo los esenciales */
-const MOBILE = ["/", "/diccionario", "/vocabulario", "/escuchar", "/hablar"];
+const MOBILE = ["/", "/diccionario", "/especialidades", "/vocabulario", "/escuchar"];
 
 const spring = { type: "spring", stiffness: 420, damping: 34 } as const;
 
@@ -252,7 +254,7 @@ function MobileTabs() {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-card/90 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-lg lg:hidden">
       <div className="mx-auto flex max-w-md justify-between">
-        {LINKS.filter((l) => MOBILE.includes(l.href)).map(({ href, label, Icon }) => {
+        {LINKS.filter((l) => MOBILE.includes(l.href)).map(({ href, label, short, Icon }) => {
           const active = isActive(href);
           return (
             <Link key={href} href={href} className="relative flex flex-1 flex-col items-center gap-0.5 py-1 text-[11px] font-bold">
@@ -266,7 +268,7 @@ function MobileTabs() {
               >
                 <Icon width={21} height={21} />
               </motion.span>
-              <span className={`relative ${active ? "text-accent" : "text-muted"}`}>{label}</span>
+              <span className={`relative ${active ? "text-accent" : "text-muted"}`}>{short ?? label}</span>
             </Link>
           );
         })}

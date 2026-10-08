@@ -209,6 +209,13 @@ function Dictation() {
 
 function Reductions() {
   const [revealed, setRevealed] = useState<Set<string>>(new Set());
+  const toggle = (key: string) =>
+    setRevealed((s) => {
+      const n = new Set(s);
+      if (n.has(key)) n.delete(key);
+      else n.add(key);
+      return n;
+    });
   const items = useMemo(() => REDUCTIONS, []);
   return (
     <div className="space-y-5">
@@ -223,20 +230,22 @@ function Reductions() {
         {items.map((r, i) => {
           const open = revealed.has(r.short);
           return (
-            <motion.button
+            // div y no <button>: adentro va el botón de audio y un botón no puede contener otro
+            <motion.div
               key={r.short}
+              role="button"
+              tabIndex={0}
+              aria-expanded={open}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.025 }}
-              onClick={() =>
-                setRevealed((s) => {
-                  const n = new Set(s);
-                  if (n.has(r.short)) n.delete(r.short);
-                  else n.add(r.short);
-                  return n;
-                })
-              }
-              className="rounded-2xl border border-line bg-card p-4 text-left transition-colors hover:border-ink"
+              onClick={() => toggle(r.short)}
+              onKeyDown={(e) => {
+                if (e.target !== e.currentTarget || (e.key !== "Enter" && e.key !== " ")) return;
+                e.preventDefault();
+                toggle(r.short);
+              }}
+              className="cursor-pointer rounded-2xl border border-line bg-card p-4 text-left transition-colors hover:border-ink focus-visible:border-accent focus-visible:outline-none"
             >
               <div className="flex items-center justify-between gap-3">
                 <p className="font-display text-2xl font-semibold text-accent">{r.short}</p>
@@ -256,7 +265,7 @@ function Reductions() {
                   </motion.p>
                 )}
               </AnimatePresence>
-            </motion.button>
+            </motion.div>
           );
         })}
       </div>
