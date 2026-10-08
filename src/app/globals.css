@@ -1,26 +1,153 @@
 @import "tailwindcss";
 
+/* dark: sigue al botón de tema (data-theme), no sólo al sistema */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Paleta inspirada en un dashboard suave: gris perla, tinta morada y tarjetas pastel */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --paper: #ececf1;
+  --card: #ffffff;
+  --ink: #26233a;
+  --muted: #7a778c;
+  --line: #e2e1ea;
+  --hero: #2b2840;
+  --hero-ink: #ffffff;
+  --accent: #6b4eff;
+  --accent-soft: #ebe6ff;
+  --green: #1f9d55;
+  --green-soft: #d9f5e4;
+  --blue: #2f6fe0;
+  --blue-soft: #dfe9fd;
+  --gold: #c9820a;
+  --gold-soft: #fdeccb;
+  --red: #e5484d;
+  --red-soft: #fde4e4;
+  /* tarjetas de tema (pastel, mismas en ambos modos) */
+  --lilac: #b8a6ff;
+  --peach: #fcd9b2;
+  --lime: #e6f55a;
+  --sky: #a9d6ff;
+  --mint: #a8ecc8;
+  --rose: #ffb8cc;
+  --on-pastel: #1e1b2e;
+  --shadow: 0 1px 2px rgb(38 35 58 / 0.04), 0 8px 24px -12px rgb(38 35 58 / 0.12);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #121119;
+  --card: #1c1b26;
+  --ink: #f1f0f7;
+  --muted: #9b98ad;
+  --line: #2c2a3a;
+  --hero: #262338;
+  --hero-ink: #ffffff;
+  --accent: #9d87ff;
+  --accent-soft: #2b2547;
+  --green: #4cd68a;
+  --green-soft: #173327;
+  --blue: #7ea8ff;
+  --blue-soft: #1b2645;
+  --gold: #f2b84b;
+  --gold-soft: #3a2e14;
+  --red: #ff7a7f;
+  --red-soft: #3d1c20;
+  --shadow: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 12px 32px -16px rgb(0 0 0 / 0.6);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-hero: var(--hero);
+  --color-hero-ink: var(--hero-ink);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-green: var(--green);
+  --color-green-soft: var(--green-soft);
+  --color-blue: var(--blue);
+  --color-blue-soft: var(--blue-soft);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-red: var(--red);
+  --color-red-soft: var(--red-soft);
+  --color-lilac: var(--lilac);
+  --color-peach: var(--peach);
+  --color-lime: var(--lime);
+  --color-sky: var(--sky);
+  --color-mint: var(--mint);
+  --color-rose: var(--rose);
+  --color-on-pastel: var(--on-pastel);
+  --font-sans: var(--font-jakarta);
+  --font-display: var(--font-nunito);
+  --shadow-soft: var(--shadow);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* transición suave sólo mientras se cambia de tema */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    color 0.4s ease,
+    fill 0.4s ease !important;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.perspective {
+  perspective: 1200px;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Botón "3D" estilo Duolingo: sombra sólida abajo que se hunde al presionar */
+.btn-3d {
+  box-shadow: 0 4px 0 0 var(--btn-edge, rgb(0 0 0 / 0.25));
+  transform: translateY(0);
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.btn-3d:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 0 var(--btn-edge, rgb(0 0 0 / 0.25));
+}
+
+/* Bloque de palabra (juego de armar frases) */
+.chip-3d {
+  box-shadow: 0 3px 0 0 var(--line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
 }
